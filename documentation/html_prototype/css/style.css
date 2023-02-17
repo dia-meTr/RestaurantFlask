@@ -1,0 +1,116 @@
+td{
+    background-color: rgb(255, 255, 255);
+}
+
+th, td {
+    border: 1px solid black;
+}
+table{
+    width: 80%;
+    margin: auto;
+}
+
+td{
+    text-align: center;
+}
+
+td a {
+    width: 100%;
+    display: block;
+}
+
+tr{
+    height: 40px;
+
+}
+
+a{
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+.chosen-table-block{
+    background-color: rgb(134, 134, 134);
+}
+
+.table-block{
+    background-color: rgb(218, 216, 216);
+    transition: all 0.5s linear;
+}
+
+.table-block:hover{
+    background-color: rgb(196, 196, 197);
+
+}
+
+.add-button{
+    background-color: rgb(15, 160, 15);
+    color: white;
+    font-weight: bold;
+    width: 180px;
+    height: 40px;
+    border-radius: 8px;
+    margin: 10px;
+    float: right;
+    margin-right: 30px;
+    border: 0.6px solid black;
+
+    transition: all 0.5s linear;
+}
+
+.add-button:hover{
+    background-color: rgb(10, 90, 10);
+    color: white;
+    font-weight: bold;
+    width: 180px;
+    height: 40px;
+    border-radius: 8px;
+    margin: 10px;
+    float: right;
+    margin-right: 30px;
+    border: 0.6px solid black;
+}
+
+.table-title{
+    background-color: rgb(66, 66, 66);
+    color: #fff;
+}
+
+.column-title{
+    background-color: rgb(194, 194, 194);
+}
+
+.edit-icon, .delete-icon{
+    width: 30px;
+    height: 30px;
+    margin: 10px;
+}
+
+.submit-button{
+    border: none;
+    background: url('../icons/refresh.png') no-repeat top left;
+    width: 35px;
+    background-size: 35px 35px;
+    height: 35px;
+    margin-left: 10px;
+    vertical-align: bottom;
+    cursor: pointer;
+
+}
+
+.datetime-form{
+    margin-bottom: 10px;
+    height: 40px;
+}
+
+.background-1{
+    background-color: rgb(235, 235, 235);
+}
+
+.numeric-input{
+    width: 60px;
+}
+.right-label{
+    margin-left: 20px;
+}
