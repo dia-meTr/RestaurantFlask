@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/edit-item_styles.css">
+
+</head>
+
+<body>
+    <table class="edit-table">
+        <thead><td colspan="8" class="table-title"><b>ADD ORDER</b></td></thead>
+
+        <form action="" method="POST">
+            <tr class="main-row">
+                <td class="chosen-table-block"><a href="">Orders</a></td>
+                <td class="table-block"><a href="waiters.html">Waiters</a></td>
+                <td class="table-block"><a href="meals.html">Meals</a></td>
+                <td class="table-block"><a href="drinks.html">Drinks</a></td>
+
+                <td colspan="2">
+                    <a href="orders.html"><button class="cancel-button">Cancel</button></a>
+                    <input type="submit" class="add-button" value="Save">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="5" class="edit-form-block">
+                    <label for="name" class="labels">Waiter name:</label>
+                    <select name="name" id="name1">
+                        <option value="">Diana Tryhub</option>
+                        <option value="">Olha Suprun</option>
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="5" class="edit-form-block">
+                    <label for="adddate" class="labels">Date of order: </label>
+                    <input type="date">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="5" class="edit-form-block">
+                    <label for="adddate" class="labels">Time of order: </label>
+                    <input type="time">
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="5" class="edit-form-block">
+                    <label for="days" class="labels">Number of table: </label>
+                    <input type="number" min="0" max="100" value="7">
+                </td>
+            </tr>
+
+        </form>
+
+    </table>
+
+</body>
+</html>
