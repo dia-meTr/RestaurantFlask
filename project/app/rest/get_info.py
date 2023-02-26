@@ -4,6 +4,7 @@ from flask import abort
 from app import api, db
 from app.models import Orders, Meals, Drinks, Waiters
 from app.rest.constants import resource_order_fields, resource_drink_fields, resource_meal_fields
+from app.service.delete_methods import delete_order
 
 
 class GetOrder(Resource):
@@ -18,6 +19,22 @@ class GetOrder(Resource):
         """
 
         order = Orders.query.get(id)
+        if not order:
+            abort(404)
+
+        return order
+
+    @marshal_with(resource_order_fields)
+    def delete(self, id):
+        """
+            Method which can be used to delete specific order using his id
+
+            Expects: order id : int
+            Modifies: order with specified id
+            Returns: deleted order
+        """
+
+        order = delete_order(id)
         if not order:
             abort(404)
 

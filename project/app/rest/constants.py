@@ -9,6 +9,7 @@ order_put_args.add_argument('status', type=int)
 order_put_args.add_argument('orders_date', type=str)
 
 resource_meal_fields = {
+        'id': fields.Integer,
         'title': fields.String,
         'description': fields.String,
         'weight': fields.Float,

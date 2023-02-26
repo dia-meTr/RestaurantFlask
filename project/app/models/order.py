@@ -1,16 +1,18 @@
 from app import db
 from datetime import date
 from .waiters import Waiters
-from .menu import Meals, Drinks
+from .menu import Meals, Drinks, MealOrder, DrinkOrder
 
 meal_orders = db.Table('meal_orders',
                        db.Column('order', db.Integer, db.ForeignKey('orders.id')),
-                       db.Column('meal', db.Integer, db.ForeignKey('meals.id'))
+                       db.Column('meal', db.Integer, db.ForeignKey('meals.id')),
+                       db.Column('amount', db.Integer),
                        )
 
 drink_orders = db.Table('drink_orders',
                         db.Column('order', db.Integer, db.ForeignKey('orders.id')),
-                        db.Column('drink', db.Integer, db.ForeignKey('drinks.id'))
+                        db.Column('drink', db.Integer, db.ForeignKey('drinks.id')),
+                        db.Column('amount', db.Integer),
                         )
 
 
@@ -26,8 +28,8 @@ class Orders(db.Model):
     status = db.Column(db.Integer, db.ForeignKey('status.id'))
     orders_date = db.Column(db.Date, index=True, default=date.today())
 
-    meals = db.relationship('Meals', secondary=meal_orders, backref='orders')
-    drinks = db.relationship('Drinks', secondary=drink_orders, backref='orders')
+    meals = db.relationship('Meals', secondary=meal_orders, backref='orders', cascade='all, delete')
+    drinks = db.relationship('Drinks', secondary=drink_orders, backref='orders', cascade='all, delete')
 
     @property
     def waiter_name(self):
