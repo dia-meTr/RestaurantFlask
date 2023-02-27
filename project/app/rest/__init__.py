@@ -1,2 +1,2 @@
 import app.rest.get_info
-# import app.rest.get_one__API
+import app.rest.waiters_api

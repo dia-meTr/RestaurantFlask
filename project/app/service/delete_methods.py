@@ -1,5 +1,5 @@
 from app import db
-from app.models import Orders, Meals, Drinks, Waiters, meal_orders
+from app.models import Order, Meals, Drinks, Waiter, meal_orders
 
 '''
 def delete_tour(id_):
@@ -35,7 +35,7 @@ def delete_client(passport):
 
 
 def delete_order(id_):
-    order = Orders.query.get(id_)
+    order = Order.query.get(id_)
     if not order:
         return None
 
