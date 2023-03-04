@@ -1,5 +1,5 @@
 from app import db
-from app.models import Waiter
+from app.models import Waiter, Order
 
 
 def update_waiter(id, new_values):
@@ -27,4 +27,32 @@ def update_waiter(id, new_values):
         db.session.commit()
 
     return waiter
+
+
+def update_order(id, new_data):
+    order = Order.query.get(id)
+    if order is None:
+        return None
+
+    if new_data:
+        waiter = new_data.get('waiter', None)
+        if waiter:
+            order.hire_date = waiter
+
+        table = new_data.get('table', None)
+        if table:
+            order.table = table
+
+        status = new_data.get('status', None)
+        if status:
+            order.status = status
+
+        orders_date = new_data.get('orders_date', None)
+        if orders_date:
+            order.orders_date = orders_date
+
+        db.session.commit()
+
+    return order
+
 

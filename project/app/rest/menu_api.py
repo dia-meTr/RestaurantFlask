@@ -4,41 +4,7 @@ from flask import abort
 from app import api, db
 from app.models import Order, Meals, Drinks, Waiter
 from app.rest.constants import resource_order_fields, resource_drink_fields, resource_meal_fields
-from app.service.delete_methods import delete_order
-
-
-class GetOrder(Resource):
-    @marshal_with(resource_order_fields)
-    def get(self, id):
-        """
-            Method which can be used to get specific order using his id
-
-            Expects: order id : int
-            Modifies: nothing
-            Returns: order
-        """
-
-        order = Order.query.get(id)
-        if not order:
-            abort(404)
-
-        return order
-
-    @marshal_with(resource_order_fields)
-    def delete(self, id):
-        """
-            Method which can be used to delete specific order using his id
-
-            Expects: order id : int
-            Modifies: order with specified id
-            Returns: deleted order
-        """
-
-        order = delete_order(id)
-        if not order:
-            abort(404)
-
-        return order
+from app.service import delete_order
 
 
 class GetMeal(Resource):
@@ -77,6 +43,5 @@ class GetDrink(Resource):
         return drink
 
 
-api.add_resource(GetOrder, '/json_orders/<int:id>')
 api.add_resource(GetMeal, '/json_meals/<int:id>')
 api.add_resource(GetDrink, '/json_drinks/<int:id>')

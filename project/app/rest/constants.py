@@ -3,10 +3,10 @@ from flask_restful import fields, reqparse
 from app.models.menu import Meals
 
 order_put_args = reqparse.RequestParser()
-order_put_args.add_argument('waiter', type=int)
-order_put_args.add_argument('table', type=int)
-order_put_args.add_argument('status', type=int)
-order_put_args.add_argument('orders_date', type=str)
+order_put_args.add_argument('waiter', type=int, location='args')
+order_put_args.add_argument('table', type=int, location='args')
+order_put_args.add_argument('status', type=int, location='args')
+order_put_args.add_argument('orders_date', type=str, location='args')
 
 waiter_put_args = reqparse.RequestParser()
 waiter_put_args.add_argument('first_name', type=str, location='args')

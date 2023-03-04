@@ -5,8 +5,8 @@ from app.models import Order, Waiter
 
 def get_orders(filters):
     if filters:
-        s_from_date = filters.get('tour_date_from', None)
-        s_by_date = filters.get('tour_date_by', None)
+        s_from_date = filters.get('orders_date_from', None)
+        s_by_date = filters.get('orders_date_by', None)
 
         if s_from_date and s_by_date:
             from_date = date.fromisoformat(s_from_date)
@@ -16,17 +16,17 @@ def get_orders(filters):
             from_date -= timedelta(days=1)
 
             print(from_date, by_date)
-            orders = Order.query.filter(Order.tour_date > from_date).filter(by_date > Order.tour_date)
+            orders = Order.query.filter(Order.orders_date > from_date).filter(by_date > Order.orders_date)
         elif s_from_date:
             from_date = date.fromisoformat(s_from_date)
             from_date -= timedelta(days=1)
 
-            orders = Order.query.filter(Order.tour_date >= from_date)
+            orders = Order.query.filter(Order.orders_date >= from_date)
         elif s_by_date:
             by_date = date.fromisoformat(s_by_date)
             by_date += timedelta(days=1)
 
-            orders = Order.query.filter(by_date >= Order.tour_date)
+            orders = Order.query.filter(by_date >= Order.orders_date)
         else:
             orders = Order.query.all()
     else:

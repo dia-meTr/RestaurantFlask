@@ -1,7 +1,6 @@
 from app import db
-from datetime import date
+from sqlalchemy.sql import func
 from .waiter import Waiter
-from .menu import Meals, Drinks
 
 meal_orders = db.Table('meal_orders',
                        db.Column('order', db.Integer, db.ForeignKey('orders.id')),
@@ -30,7 +29,7 @@ class Order(db.Model):
     waiter = db.Column(db.Integer, db.ForeignKey('waiters.id'))
     table = db.Column(db.Integer)
     status = db.Column(db.Integer, db.ForeignKey('status.id'))
-    orders_date = db.Column(db.Date, index=True, default=date.today())
+    orders_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
     meals = db.relationship('Meals', secondary=meal_orders, backref='orders', cascade='all, delete')
     drinks = db.relationship('Drinks', secondary=drink_orders, backref='orders', cascade='all, delete')
@@ -48,13 +47,11 @@ class Order(db.Model):
     @property
     def get_meals(self):
         meals = self.meals
-        print(meals)
         return meals
 
     @property
     def get_drinks(self):
         drinks = self.drinks
-        print(drinks)
         return drinks
 
     @property
