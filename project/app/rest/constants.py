@@ -1,6 +1,33 @@
-from datetime import datetime
+from marshmallow import Schema, fields
+
+
+class ResourceMealBill(Schema):
+    meal_id = fields.Integer()
+    meal = fields.String()
+    order_id = fields.Integer()
+    amount = fields.Integer()
+    cost = fields.Float()
+
+
+class waiter_fields(Schema):
+    id = fields.Integer()
+    first_name = fields.String()
+    last_name = fields.String()
+    hire_date = fields.String()
+    dismissal_date = fields.String()
+    phone_number = fields.String()
+    email = fields.String()
+
+
+class OrderFields(Schema):
+    waiter_name = fields.String()
+    table = fields.Integer()
+    orders_date = fields.String()
+    status_value = fields.String()
+    total_cost = fields.Float()
+
+
 from flask_restful import fields, reqparse
-from app.models.menu import Meals
 
 order_put_args = reqparse.RequestParser()
 order_put_args.add_argument('waiter', type=int, location='args')
@@ -31,14 +58,12 @@ resource_drink_fields = {
     'price': fields.Float
 }
 
-resource_order_fields = {
-    'waiter_name': fields.String,
-    'table': fields.Integer,
-    'orders_date': fields.String,
-    'status_value': fields.String,
-    'get_meals': fields.Nested(resource_meal_fields),
-    'get_drinks': fields.Nested(resource_drink_fields),
-    'total_cost': fields.Float
+resource_item = {
+    'meal_id': fields.Integer,
+    'meal_info': fields.Nested(resource_meal_fields),
+    'amount': fields.Integer,
+    'status': fields.String,
+    'cost': fields.Float
 }
 
 resource_waiter_fields = {
@@ -49,4 +74,14 @@ resource_waiter_fields = {
     'dismissal_date': fields.String,
     'phone_number': fields.String,
     'email': fields.String
+}
+
+resource_order_fields = {
+    'waiter_name': fields.String,
+    'table': fields.Integer,
+    'orders_date': fields.String,
+    'status_value': fields.String,
+    'get_meals': fields.Nested(resource_item),
+    'get_drinks': fields.Nested(resource_drink_fields),
+    'total_cost': fields.Float
 }

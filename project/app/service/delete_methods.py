@@ -1,5 +1,5 @@
 from app import db
-from app.models import Order, Meals, Drinks, Waiter, meal_orders
+from app.models import Order, Meal, Drink, Waiter, Association
 
 '''
 def delete_tour(id_):

@@ -1,9 +1,11 @@
 from flask_restful import Resource, marshal_with
 from flask import abort, request
 
+from flask_apispec.views import MethodResource
+
 from app import api, db
 from app.models import Waiter
-from app.rest.constants import resource_waiter_fields, waiter_put_args
+from app.rest.constants import resource_waiter_fields, waiter_put_args, waiter_fields
 from app.service.get_methods import get_waiters
 from app.service.update_methods import update_waiter
 from app.service.post_methods import add_to_db
@@ -44,8 +46,11 @@ class GetWaiter(Resource):
         return waiter
 
 
-class GetWaiters(Resource):
-    @marshal_with(resource_waiter_fields)
+from flask_apispec import marshal_with, use_kwargs
+
+
+class GetWaiters(MethodResource, Resource):
+    @marshal_with(waiter_fields(many=True))
     def get(self):
         """
             Method which can be used to get all waiters
@@ -55,7 +60,9 @@ class GetWaiters(Resource):
             Returns: waiters
         """
 
-        waiters = get_waiters(request.args)
+        #waiters = get_waiters(request.args)
+
+        waiters = Waiter.query.all()
 
         return waiters
 

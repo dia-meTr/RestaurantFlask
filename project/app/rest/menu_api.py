@@ -2,7 +2,7 @@ from flask_restful import Resource, marshal_with
 from flask import abort
 
 from app import api, db
-from app.models import Order, Meals, Drinks, Waiter
+from app.models import Order, Meal, Drink, Waiter
 from app.rest.constants import resource_order_fields, resource_drink_fields, resource_meal_fields
 from app.service import delete_order
 
@@ -18,7 +18,7 @@ class GetMeal(Resource):
             Returns: meal
         """
 
-        meal = Meals.query.get(id)
+        meal = Meal.query.get(id)
         if not meal:
             abort(404)
 
@@ -36,7 +36,7 @@ class GetDrink(Resource):
             Returns: order
         """
 
-        drink = Drinks.query.get(id)
+        drink = Drink.query.get(id)
         if not drink:
             abort(404)
 

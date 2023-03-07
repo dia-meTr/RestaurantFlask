@@ -17,7 +17,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 api = Api(app)
 
-from app import views, models, rest
 
 app.config.update({
     'APISPEC_SPEC': APISpec(
@@ -30,3 +29,5 @@ app.config.update({
     'APISPEC_SWAGGER_UI_URL': '/swagger-ui/'  # URI to access UI of API Doc
 })
 docs = FlaskApiSpec(app)
+
+from app import views, models, rest

@@ -1,23 +1,39 @@
 from app import db
 from sqlalchemy.sql import func
 from .waiter import Waiter
+from .menu import Meal, Drink
 
-meal_orders = db.Table('meal_orders',
-                       db.Column('order', db.Integer, db.ForeignKey('orders.id')),
-                       db.Column('meal', db.Integer, db.ForeignKey('meals.id')),
-                       db.Column('amount', db.Integer),
-                       )
 
-drink_orders = db.Table('drink_orders',
-                        db.Column('order', db.Integer, db.ForeignKey('orders.id')),
-                        db.Column('drink', db.Integer, db.ForeignKey('drinks.id')),
-                        db.Column('amount', db.Integer),
-                        )
+class Association(db.Model):
+    __tablename__ = 'meal_orders'
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
+    meal_id = db.Column(db.Integer, db.ForeignKey('meals.id'), primary_key=True)
+    amount = db.Column(db.Integer, server_default='1')
+    status_id = db.Column(db.Integer, db.ForeignKey('status.id'), server_default='2')
+
+    order = db.relationship("Order", back_populates="meals")
+    meal = db.relationship("Meal")
+    status = db.relationship("Status")
+
+    @property
+    def meal_info(self):
+        meal = Meal.query.filter(Meal.id == self.meal_id).first()
+        return meal
+
+    @property
+    def cost(self):
+        meal = Meal.query.filter(Meal.id == self.meal_id).first()
+        cost = meal.price * self.amount
+
+        return cost
+
+
+drink_orders = []
 
 
 class Status(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(10))
+    status = db.Column(db.String(10), unique=True, nullable=False)
 
     def __repr__(self):
         return f'{self.status}'
@@ -26,13 +42,11 @@ class Status(db.Model):
 class Order(db.Model):
     __tablename__ = 'orders'
     id = db.Column(db.Integer, primary_key=True)
-    waiter = db.Column(db.Integer, db.ForeignKey('waiters.id'))
+    waiter = db.Column(db.Integer, db.ForeignKey('waiters.id'), nullable=False)
     table = db.Column(db.Integer)
-    status = db.Column(db.Integer, db.ForeignKey('status.id'))
     orders_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
 
-    meals = db.relationship('Meals', secondary=meal_orders, backref='orders', cascade='all, delete')
-    drinks = db.relationship('Drinks', secondary=drink_orders, backref='orders', cascade='all, delete')
+    meals = db.relationship("Association", back_populates="order")
 
     @property
     def waiter_name(self):
@@ -51,7 +65,7 @@ class Order(db.Model):
 
     @property
     def get_drinks(self):
-        drinks = self.drinks
+        drinks = []  # self.drinks
         return drinks
 
     @property
@@ -60,10 +74,6 @@ class Order(db.Model):
 
     def __repr__(self):
         return f'{self.table}, {self.total_cost}'
-    """
-    @property
-    def tour_day_cost(self):
-        return Waiter.query.get(self.id).day_cost
-"""
+
 
 

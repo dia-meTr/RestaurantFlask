@@ -5,7 +5,7 @@ from datetime import date
 class Waiter(db.Model):
     __tablename__ = 'waiters'
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(50))
+    first_name = db.Column(db.String(50), nullable=False)
     last_name = db.Column(db.String(50))
     hire_date = db.Column(db.Date, index=True, default=date.today())
     dismissal_date = db.Column(db.Date, index=True)

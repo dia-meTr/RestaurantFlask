@@ -1,3 +1,3 @@
-from .order import Status, Order, meal_orders
+from .order import *
 from .waiter import Waiter
-from .menu import Drinks, Meals
+from .menu import Drink, Meal
