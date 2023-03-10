@@ -1,5 +1,5 @@
 import requests
-from flask import render_template, redirect, url_for
+from flask import render_template, redirect, url_for, request
 from flask.views import MethodView
 
 from app import app, db, BASE

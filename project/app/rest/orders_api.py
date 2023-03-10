@@ -60,7 +60,7 @@ class GetOrder(MethodResource, Resource):
             Returns: order
         """
         # data = order_put_args.parse_args()
-        order = update_order(id, **kwargs)
+        order = update_order(id, kwargs)
 
         if not order:
             abort(404)
