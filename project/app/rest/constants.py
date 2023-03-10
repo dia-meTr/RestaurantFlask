@@ -1,12 +1,55 @@
 from marshmallow import Schema, fields
 
 
-class ResourceMealBill(Schema):
+class OrdersSchema(Schema):
+    id = fields.Integer()
+    waiter_name = fields.String()
+    table = fields.Integer()
+    orders_date = fields.String()
+    status_value = fields.String()
+    total_cost = fields.Float()
+
+
+class MealSchema(Schema):
+    id = fields.Integer(),
+    title = fields.String(),
+    description = fields.String(),
+    weight = fields.Float(),
+    price = fields.Float()
+
+
+class MealBillSchema(Schema):
     meal_id = fields.Integer()
-    meal = fields.String()
+    meal = fields.Nested(MealSchema())
     order_id = fields.Integer()
     amount = fields.Integer()
     cost = fields.Float()
+
+
+class DrinkSchema(Schema):
+    title = fields.String(),
+    description = fields.String(),
+    size = fields.Float(),
+    price = fields.Float()
+
+
+class DrinkBillSchema(Schema):
+    meal_id = fields.Integer()
+    meal = fields.Nested(DrinkSchema())
+    order_id = fields.Integer()
+    amount = fields.Integer()
+    cost = fields.Float()
+
+
+class OrderSchema(Schema):
+    id = fields.Integer()
+    waiter_name = fields.String()
+    table = fields.Integer()
+    orders_date = fields.String()
+    status_value = fields.String()
+    total_cost = fields.Float()
+    meals = fields.Nested(MealBillSchema()),
+    get_drinks = fields.Nested(DrinkBillSchema()),
 
 
 class waiter_fields(Schema):
@@ -19,21 +62,15 @@ class waiter_fields(Schema):
     email = fields.String()
 
 
-class OrderFields(Schema):
-    waiter_name = fields.String()
-    table = fields.Integer()
-    orders_date = fields.String()
-    status_value = fields.String()
-    total_cost = fields.Float()
 
 
 from flask_restful import fields, reqparse
 
 order_put_args = reqparse.RequestParser()
-order_put_args.add_argument('waiter', type=int, location='args')
-order_put_args.add_argument('table', type=int, location='args')
-order_put_args.add_argument('status', type=int, location='args')
-order_put_args.add_argument('orders_date', type=str, location='args')
+order_put_args.add_argument('waiter', type=int, location='json')
+order_put_args.add_argument('table', type=int, location='json')
+order_put_args.add_argument('status', type=int, location='json')
+order_put_args.add_argument('orders_date', type=str, location='json')
 
 waiter_put_args = reqparse.RequestParser()
 waiter_put_args.add_argument('first_name', type=str, location='args')
@@ -81,7 +118,10 @@ resource_order_fields = {
     'table': fields.Integer,
     'orders_date': fields.String,
     'status_value': fields.String,
-    'get_meals': fields.Nested(resource_item),
-    'get_drinks': fields.Nested(resource_drink_fields),
     'total_cost': fields.Float
 }
+
+"""
+    'get_meals': fields.Nested(resource_item),
+    'get_drinks': fields.Nested(resource_drink_fields),
+"""

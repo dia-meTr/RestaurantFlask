@@ -5,15 +5,13 @@ from .menu import Meal, Drink
 
 
 class Association(db.Model):
-    __tablename__ = 'meal_orders'
-    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), primary_key=True)
-    meal_id = db.Column(db.Integer, db.ForeignKey('meals.id'), primary_key=True)
+    __tablename__ = 'meal_order'
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'), primary_key=True)
+    meal_id = db.Column(db.Integer, db.ForeignKey('meal.id'), primary_key=True)
     amount = db.Column(db.Integer, server_default='1')
-    status_id = db.Column(db.Integer, db.ForeignKey('status.id'), server_default='2')
 
-    order = db.relationship("Order", back_populates="meals")
+    order = db.relationship("Order", back_populates="meal")
     meal = db.relationship("Meal")
-    status = db.relationship("Status")
 
     @property
     def meal_info(self):
@@ -40,22 +38,23 @@ class Status(db.Model):
 
 
 class Order(db.Model):
-    __tablename__ = 'orders'
+    __tablename__ = 'order'
     id = db.Column(db.Integer, primary_key=True)
-    waiter = db.Column(db.Integer, db.ForeignKey('waiters.id'), nullable=False)
+    waiter_id = db.Column(db.Integer, db.ForeignKey('waiters.id'), nullable=False)
     table = db.Column(db.Integer)
     orders_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
+    status_id = db.Column(db.Integer, db.ForeignKey('status.id'), server_default='1')
 
-    meals = db.relationship("Association", back_populates="order")
+    meal = db.relationship("Association", back_populates="order")
 
     @property
     def waiter_name(self):
-        waiter = Waiter.query.filter(Waiter.id == self.waiter).first()
+        waiter = Waiter.query.filter(Waiter.id == self.waiter_id).first()
         return f'{waiter.first_name} {waiter.last_name}'
 
     @property
     def status_value(self):
-        stat = Status.query.filter(Status.id == self.status).first()
+        stat = Status.query.filter(Status.id == self.status_id).first()
         return f'{stat.status}'
 
     @property
@@ -74,6 +73,3 @@ class Order(db.Model):
 
     def __repr__(self):
         return f'{self.table}, {self.total_cost}'
-
-
-

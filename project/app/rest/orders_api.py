@@ -1,14 +1,23 @@
-from flask_restful import Resource, marshal_with
+from flask_restful import Resource
 from flask import abort, request
+from flask_apispec import marshal_with, use_kwargs
+from flask_apispec.views import MethodResource
 
-from app import api, db
+from marshmallow import Schema, fields
+from app import api, docs, db
 from app.models import Order
-from app.rest.constants import resource_order_fields, order_put_args
+from app.rest.constants import OrderSchema, OrdersSchema
 from app.service import delete_order, get_orders, update_order, add_to_db
 
 
-class GetOrder(Resource):
-    @marshal_with(resource_order_fields)
+class PostOrderSchema(Schema):
+    waiter_id = fields.Integer()
+    status_id = fields.Integer()
+    table = fields.Integer()
+
+
+class GetOrder(MethodResource, Resource):
+    @marshal_with(OrdersSchema)
     def get(self, id):
         """
             Method which can be used to get specific order using his id
@@ -24,7 +33,7 @@ class GetOrder(Resource):
 
         return order
 
-    @marshal_with(resource_order_fields)
+    @marshal_with(OrdersSchema)
     def delete(self, id):
         """
             Method which can be used to delete specific order using his id
@@ -40,8 +49,9 @@ class GetOrder(Resource):
 
         return order
 
-    @marshal_with(resource_order_fields)
-    def put(self, id):
+    @use_kwargs(PostOrderSchema, location='json')
+    @marshal_with(OrdersSchema)
+    def put(self, id, **kwargs):
         """
             Method which can be used to edit specific order using its id
 
@@ -49,8 +59,8 @@ class GetOrder(Resource):
             Modifies: edit order with specified id
             Returns: order
         """
-        data = order_put_args.parse_args()
-        order = update_order(id, data)
+        # data = order_put_args.parse_args()
+        order = update_order(id, **kwargs)
 
         if not order:
             abort(404)
@@ -58,8 +68,8 @@ class GetOrder(Resource):
         return order
 
 
-class GetOrders(Resource):
-    @marshal_with(resource_order_fields)
+class GetOrders(MethodResource, Resource):
+    @marshal_with(OrderSchema(many=True))
     def get(self):
         """
             Method which can be used to get all orders
@@ -69,12 +79,13 @@ class GetOrders(Resource):
             Returns: orders
         """
 
-        waiters = get_orders(request.args)
+        orders = get_orders(request.args)
 
-        return waiters
+        return orders
 
-    @marshal_with(resource_order_fields)
-    def post(self):
+    @use_kwargs(PostOrderSchema, location='json')
+    @marshal_with(OrdersSchema)
+    def post(self, **kwargs):
         """
             Method which can be used to add new orders to the database
 
@@ -82,11 +93,14 @@ class GetOrders(Resource):
             Modifies: nothing
             Returns: created order
         """
-        args = order_put_args.parse_args()
-        order = add_to_db(Order, **args)
+        # args = order_put_args.parse_args()
+        order = add_to_db(Order, **kwargs)
 
         return order
 
 
 api.add_resource(GetOrder, '/json_orders/<int:id>')
 api.add_resource(GetOrders, '/json_orders')
+
+docs.register(GetOrder)
+docs.register(GetOrders)

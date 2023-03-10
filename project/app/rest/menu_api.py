@@ -1,14 +1,16 @@
-from flask_restful import Resource, marshal_with
+from flask_restful import Resource
 from flask import abort
+from flask_apispec import marshal_with, use_kwargs
+from flask_apispec.views import MethodResource
 
-from app import api, db
-from app.models import Order, Meal, Drink, Waiter
-from app.rest.constants import resource_order_fields, resource_drink_fields, resource_meal_fields
-from app.service import delete_order
+from marshmallow import Schema, fields
+from app import api, docs
+from app.models import Meal, Drink
+from app.rest.constants import resource_drink_fields, resource_meal_fields
 
 
 class GetMeal(Resource):
-    @marshal_with(resource_meal_fields)
+    @marshal_with(MethodResource, Resource)
     def get(self, id):
         """
             Method which can be used to get specific order using his id

@@ -16,6 +16,7 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 api = Api(app)
+BASE = 'http://127.0.0.1:5000/'
 
 
 app.config.update({

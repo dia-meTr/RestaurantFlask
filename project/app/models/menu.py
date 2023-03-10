@@ -2,7 +2,7 @@ from app import db
 
 
 class Meal(db.Model):
-    __tablename__ = 'meals'
+    __tablename__ = 'meal'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(30), unique=True, nullable=False)
     description = db.Column(db.String(255))
@@ -14,7 +14,7 @@ class Meal(db.Model):
 
 
 class Drink(db.Model):
-    __tablename__ = 'Drinks'
+    __tablename__ = 'Drink'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(30), unique=True, nullable=False)
     description = db.Column(db.String(255))
