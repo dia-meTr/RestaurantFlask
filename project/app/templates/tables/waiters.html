@@ -1,0 +1,53 @@
+{% extends 'base_table.html' %}
+
+{% block sortform %}
+    <td colspan="8">
+        <form action="{{ url_for('get_all_orders') }}" class="datetime-form">
+            <div class="formblock">
+            <label for="datefrom">Date from: </label>
+            <input type="date" id="datefrom" name="hired_before" value="{{ sort_from }}">
+
+            <label for="by" class="right-label">By: </label>
+            <input type="date" id="by" name="tour_date_by" value="{{ sort_by }}">
+            </div>
+            <input type="submit" class="submit-button" value="">
+        </form>
+    </td>
+{% endblock sortform %}
+
+
+{% block links %}
+    <td class="chosen-table-block"><a href="{{ url_for('get_all_orders') }}">Orders</a></td>
+    <td class="chosen-table-block"><a href="{{ url_for('get_all_waiters') }}">Waiters</a></td>
+{% endblock links %}
+
+{% block content %}
+    <tr>
+        <td class="column-title">First name</td>
+        <td class="column-title">Last name</td>
+        <td class="column-title">Hired date</td>
+        <td class="column-title">Dismissal date</td>
+        <td class="column-title">Phone number</td>
+        <td class="column-title">Email</td>
+        <td colspan="2" class="column-title"></td>
+    </tr>
+
+    {% for waiter in waiters %}
+        <tr>
+            <td>{{ waiter.first_name }}</td>
+            <td>{{ waiter.last_name }}</td>
+            <td>{{ waiter.hire_date }}</td>
+            <td>{{ waiter.dismissal_date }}</td>
+            <td>{{ waiter.phone_number }}</td>
+            <td>{{ waiter.email }}</td>
+            <td><a href="{{ url_for('edit_waiter', id=waiter.id) }}"><img src="{{ url_for('static', filename='icons/edit.png') }}" alt="edit" class="edit-icon"></a></td>
+            <td>
+                <form action="{{ url_for('delete_waiter', id=waiter.id) }}" method="post">
+                    <input type="submit" class="delete-button delete-icon" value="">
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+
+
+{% endblock content %}
