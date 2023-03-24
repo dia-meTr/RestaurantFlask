@@ -4,11 +4,11 @@ import os
 load_dotenv()
 
 
-user = os.environ.get("MYSQL_USER")
-password = os.environ.get("MYSQL_PASSWORD")
-server = os.environ.get("MYSQL_HOST")
-database = os.environ.get("MYSQL_DB")
-port = os.environ.get("MYSQL_PORT")
+user = 'root' # os.environ.get("MYSQL_USER")
+password = 'password' # os.environ.get("MYSQL_PASSWORD")
+server = 'localhost' # os.environ.get("MYSQL_HOST")
+database = 'restaurant' # os.environ.get("MYSQL_DB")
+port = '3306' # os.environ.get("MYSQL_PORT")
 
 #'mysql://localhost:3306/restaurant?user=root&password=password'
 

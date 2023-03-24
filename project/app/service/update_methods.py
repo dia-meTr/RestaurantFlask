@@ -29,24 +29,25 @@ def update_waiter(id, new_values):
     return waiter
 
 
-def update_order(id, **kwargs):
+def update_order(id, kwargs):
     order = Order.query.get(id)
     if order is None:
         return None
 
-    waiter = kwargs.get('waiter_id')
-    if waiter:
-        order.waiter_id = waiter
+    if kwargs:
+        waiter = kwargs.get('waiter_id')
+        if waiter:
+            order.waiter_id = waiter
 
-    table = kwargs.get('table')
-    if table:
-        order.table = table
+        table = kwargs.get('table')
+        if table:
+            order.table = table
 
-    status = kwargs.get('status_id')
-    if status:
-        order.status_id = status
+        status = kwargs.get('status_id')
+        if status:
+            order.status_id = status
 
-    db.session.commit()
+        db.session.commit()
 
     return order
 
